@@ -77,6 +77,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ModelResponse"
+  /public/v1/quali-logos:
+    get:
+      tags:
+        - QualiLogo
+      description: Returns all qualilogos.
+      operationId: getAll
+      parameters:
+        - name: brand
+          description: Filter qualilogos by brand.
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Brand"
+        - name: vehicleCategory
+          description: Filter qualilogos by vehicle category.
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/VehicleCategory"
+        - name: language
+          description: Filter qualilogos by language.
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Language"
+      responses:
+        "200":
+          description: Qualilogos successfully returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QualiLogoResponse"
 components:
   parameters:
     vehicleCategoryQueryParam:
@@ -276,6 +308,37 @@ components:
           type: integer
           format: int32
           example: 7
+    QualiLogoResponse:
+      description: Retrieved QualiLogos.
+      type: array
+      items:
+        $ref: "#/components/schemas/QualiLogo"
+    QualiLogo:
+      description: Represents data for the QualiLogo entity.
+      type: object
+      properties:
+        id:
+          description: Id of QualiLogo entity.
+          type: integer
+          format: int64
+          example: 12
+        imageKey:
+          description: Url path to image of QualiLogo.
+          type: string
+          example: "/qualilogos/12.svg"
+        name:
+          description: Name of QualiLogo entity.
+          type: string
+          example: "Renault"
+        url:
+          description: Full url to QualiLogo web page.
+          type: string
+          example: "https://de.renault.ch/renault-selection.html"
+    Brand:
+      type: string
+      enum:
+        - autoscout24
+        - motoscout24
     Facet:
       type: string
       enum:
@@ -299,6 +362,13 @@ components:
         - phev-diesel
         - phev-petrol
         - two-stroke-mixture
+    Language:
+      type: string
+      enum:
+        - de
+        - fr
+        - it
+        - en
     VehicleCategory:
       type: string
       enum:
